@@ -3,24 +3,18 @@ package Validator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ValidatorSystem <T>{
+public class ValidatorSystem {
 
     private Map createMapValidator(){
-        Map<Object,Validator> map = new HashMap<>();
-        map.put("string", new ValidatorString());
-        map.put(123, new ValidatorInteger());
-        map.put(new CustomClass(), new ValidatorCustomClass());
+        Map<Class,Validator> map = new HashMap<>();
+        map.put(String.class, new ValidatorString());
+        map.put(Integer.class, new ValidatorInteger());
         return map;
     }
 
-    public void validate(T t){
-        if(t == null) throw new NullPointerException();
-        Map<Object,Validator> map = createMapValidator();
-        for (Object o : map.keySet()){
-            if(o.getClass()==t.getClass()){
-                map.get(o).validator(t);
-            } else throw new RuntimeException(" unknown Object type ");
-        }
+    public <T> boolean validate(T t){
+        Map<Class,Validator> map = createMapValidator();
+        if(!map.containsKey(t.getClass())) return false;
+        return map.get(t.getClass()).validator(t);
     }
-
 }

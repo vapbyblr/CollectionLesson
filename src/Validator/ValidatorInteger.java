@@ -3,8 +3,10 @@ package Validator;
 public class ValidatorInteger implements Validator<Integer>{
 
     @Override
-    public void validator(Integer integer) {
-        System.out.println("use Integer");
+    public boolean validator(Integer integer) {
+        if (integer > 0 & integer < 11){
+            return true;
+        } else throw new ValidationFailedException("data does not match format");
     }
 
 }
